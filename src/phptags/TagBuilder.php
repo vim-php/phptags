@@ -91,13 +91,15 @@ class TagBuilder
      */
     protected function processFile($file)
     {
-        $scanner = new Scanner(token_get_all(file_get_contents($file)));
+        $contents = file($file, FILE_IGNORE_NEW_LINES);
+        $scanner = new Scanner(token_get_all(implode("\n", $contents)));
         $classes = $scanner->getClassesInfo();
         $e       = $this->getEvent();
         foreach ($classes as $class) {
             $e->setTagName($class['name']);
             $e->setTagPath($file);
             $e->setTagType('c');
+            $e->setSearchPattern($contents[$class['lineStart']-1]);
             $this->events()->trigger('renderTag', $e);
         }
     }

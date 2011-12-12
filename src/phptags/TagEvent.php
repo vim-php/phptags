@@ -93,6 +93,28 @@ class TagEvent extends Event
     }
 
     /**
+     * Set the search pattern of the tag
+     *
+     * @param string $searchPattern
+     * @return TagEvent
+     */
+    public function setSearchPattern($searchPattern)
+    {
+        $this->setParam('searchpattern', $searchPattern);
+        return $this;
+    }
+
+    /**
+     * Get the search pattern of the tag
+     *
+     * @return string
+     */
+    public function getSearchPattern()
+    {
+        return $this->getParam('searchpattern');
+    }
+
+    /**
      * Set the raw line to be rendered 
      * 
      * @param string $rawLine 
