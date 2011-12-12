@@ -27,6 +27,6 @@ Zend\Loader\AutoloaderFactory::factory(array('Zend\Loader\StandardAutoloader' =>
     'phptags' => __DIR__ . '/src/phptags'
 ))));
 
-$tagBuilder = new phptags\TagBuilder(glob((isset($argv[1]) && trim($argv[1])) ? $argv[1] : '*.php'));
+$tagBuilder = new phptags\TagBuilder((isset($argv[1]) && trim($argv[1])) ? $argv[1] : '*.php');
 $tagBuilder->events()->attachAggregate(new phptags\Renderer\Stdout);
 $tagBuilder->execute();

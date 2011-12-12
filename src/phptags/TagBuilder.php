@@ -45,12 +45,12 @@ class TagBuilder
     /**
      * __construct 
      * 
-     * @param array $files 
+     * @param string $globPath 
      * @return void
      */
-    public function __construct(array $files)
+    public function __construct($globPath)
     {
-        $this->files = $files;
+        $this->files = $this->globRecursive($globPath);
     }
 
     /**
@@ -60,9 +60,27 @@ class TagBuilder
      */
     public function execute()
     {
+        $this->tagFileHeader();
         foreach ($this->files as $file) {
             $this->processFile($file);
         }
+    }
+
+    /**
+     * Render the header lines for the tag file 
+     * 
+     * @access protected
+     * @return void
+     */
+    protected function tagFileHeader()
+    {
+        $this->rawLine("!_TAG_FILE_FORMAT\t2\t/extended format/");
+        // @TODO: Support sorting
+        $this->rawLine("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/");
+        $this->rawLine("!_TAG_PROGRAM_AUTHOR\tEvan Coury\t/me@evancoury.com/");
+        $this->rawLine("!_TAG_PROGRAM_NAME\tphptags\t//");
+        $this->rawLine("!_TAG_PROGRAM_URL\thttps://github.com/EvanDotPro/phptags\t/official site/");
+        $this->rawLine("!_TAG_PROGRAM_VERSION\t0.1\t//");
     }
 
     /**
@@ -74,9 +92,26 @@ class TagBuilder
     protected function processFile($file)
     {
         $scanner = new Scanner(token_get_all(file_get_contents($file)));
-        $info = $scanner->getClassesInfo();
-        $this->getEvent()->setRawLine(print_r($info, 1));
-        $this->events()->trigger('renderRawLine', $this->getEvent());
+        $classes = $scanner->getClassesInfo();
+        $e       = $this->getEvent();
+        foreach ($classes as $class) {
+            $e->setTagName($class['name']);
+            $e->setTagPath($file);
+            $e->setTagType('c');
+            $this->events()->trigger('renderTag', $e);
+        }
+    }
+
+    /**
+     * Convenience method for triggering a raw line event 
+     * 
+     * @param string $line 
+     * @return TagBuilder
+     */
+    protected function rawLine($line)
+    {
+        $this->events()->trigger('renderRawLine', $this->getEvent()->setRawLine($line));
+        return $this;
     }
 
     /**
@@ -129,5 +164,22 @@ class TagBuilder
             $this->setEventManager(new EventManager($identifiers));
         }
         return $this->events;
+    }
+
+    /**
+     * Simple recursive glob(). Does not support GLOB_BRACE 
+     *
+     * @see http://www.php.net/manual/en/function.glob.php#106595
+     * @param string $pattern 
+     * @param int $flags 
+     * @return array
+     */
+    protected function globRecursive($pattern, $flags = 0)
+    {
+        $files = glob($pattern, $flags);
+        foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
+            $files = array_merge($files, $this->globRecursive($dir . '/' . basename($pattern), $flags));
+        }
+        return $files;
     }
 }

@@ -49,6 +49,50 @@ class TagEvent extends Event
     }
 
     /**
+     * Set the path to the tag 
+     * 
+     * @param string $tagPath 
+     * @return TagEvent
+     */
+    public function setTagPath($tagPath)
+    {
+        $this->setParam('tagpath', $tagPath);
+        return $this;
+    }
+
+    /**
+     * Get the path to the tag 
+     * 
+     * @return string
+     */
+    public function getTagPath()
+    {
+        return $this->getParam('tagpath');
+    }
+
+    /**
+     * Set the type of the tag 
+     * 
+     * @param string $tagType 
+     * @return TagEvent
+     */
+    public function setTagType($tagType)
+    {
+        $this->setParam('tagtype', $tagType);
+        return $this;
+    }
+
+    /**
+     * Get the type of the tag 
+     * 
+     * @return string
+     */
+    public function getTagType()
+    {
+        return $this->getParam('tagtype');
+    }
+
+    /**
      * Set the raw line to be rendered 
      * 
      * @param string $rawLine 
