@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+/**
+ * This file is part of phptags.
+ *
+ * phptags is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3 of the License.
+ *
+ * phptags is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with phptags. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category phptags
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @copyright Copyright 2011 Evan Coury (http://evan.pro/)
+ * @package phptags
+ */
+
+define('ZF2_PATH', dirname(__DIR__) . '/zf2/library');
+require_once ZF2_PATH . '/Zend/Loader/AutoloaderFactory.php';
+Zend\Loader\AutoloaderFactory::factory(array('Zend\Loader\StandardAutoloader' => array('namespaces' => array(
+    'phptags' => __DIR__ . '/src/phptags'
+))));
+
+$tagBuilder = new phptags\TagBuilder(glob((isset($argv[1]) && trim($argv[1])) ? $argv[1] : '*.php'));
+$tagBuilder->events()->attachAggregate(new phptags\Renderer\Stdout);
+$tagBuilder->execute();
