@@ -42,7 +42,14 @@ abstract class AbstractRenderer implements Renderer
      */
     protected function tagEventToString(TagEvent $e)
     {
-        return $e->getTagName() . "\t" . $e->getTagPath() . "\t/^" . $e->getSearchPattern() . "$/;\"\t" . $e->getTagType() . "\n";
+        return $e->getTagName()
+            . "\t"
+            . $e->getTagPath()
+            . "\t"
+            . "/^" . preg_quote($e->getSearchPattern(), '/'). "$/;"
+            . "\"\t"
+            . $e->getTagType()
+            . "\n";
     }
 
     /**
