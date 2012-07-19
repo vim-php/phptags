@@ -24,14 +24,14 @@
 namespace phptags\Renderer;
 
 use phptags\TagEvent,
-    Zend\EventManager\EventCollection;
+    Zend\EventManager\EventManagerInterface;
 
 class Stdout extends AbstractRenderer
 {
     /**
-     * renderTag 
-     * 
-     * @param TagEvent $e 
+     * renderTag
+     *
+     * @param TagEvent $e
      * @return void
      */
     public function renderTag(TagEvent $e)
@@ -40,9 +40,9 @@ class Stdout extends AbstractRenderer
     }
 
     /**
-     * renderRawLine 
-     * 
-     * @param TagEvent $e 
+     * renderRawLine
+     *
+     * @param TagEvent $e
      * @return void
      */
     public function renderRawLine(TagEvent $e)
@@ -53,10 +53,10 @@ class Stdout extends AbstractRenderer
     /**
      * Attach one or more listeners
      *
-     * @param EventCollection $events
+     * @param EventManagerInterface $events
      * @return Stdout
      */
-    public function attach(EventCollection $events)
+    public function attach(EventManagerInterface $events)
     {
         $events->attach('renderTag', array($this, 'renderTag'));
         $events->attach('renderRawLine', array($this, 'renderRawLine'));
@@ -66,10 +66,10 @@ class Stdout extends AbstractRenderer
     /**
      * Detach all previously attached listeners
      *
-     * @param EventCollection $events
+     * @param EventManagerInterface $events
      * @return Stdout
      */
-    public function detach(EventCollection $events)
+    public function detach(EventManagerInterface $events)
     {
         foreach ($this->listeners as $key => $listener) {
             $events->detach($listener);
