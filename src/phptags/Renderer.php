@@ -22,9 +22,9 @@
 
 namespace phptags;
 
-use Zend\EventManager\ListenerAggregate;
+use Zend\EventManager\ListenerAggregateInterface;
 
-interface Renderer extends ListenerAggregate 
+interface Renderer extends ListenerAggregateInterface
 {
     public function renderTag(TagEvent $e);
 

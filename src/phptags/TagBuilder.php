@@ -43,9 +43,9 @@ class TagBuilder
     protected $files;
 
     /**
-     * __construct 
-     * 
-     * @param string $globPath 
+     * __construct
+     *
+     * @param string $globPath
      * @return void
      */
     public function __construct($globPath)
@@ -54,8 +54,8 @@ class TagBuilder
     }
 
     /**
-     * execute 
-     * 
+     * execute
+     *
      * @return void
      */
     public function execute()
@@ -67,8 +67,8 @@ class TagBuilder
     }
 
     /**
-     * Render the header lines for the tag file 
-     * 
+     * Render the header lines for the tag file
+     *
      * @access protected
      * @return void
      */
@@ -84,9 +84,9 @@ class TagBuilder
     }
 
     /**
-     * processFile 
-     * 
-     * @param string $file 
+     * processFile
+     *
+     * @param string $file
      * @return void
      */
     protected function processFile($file)
@@ -105,9 +105,9 @@ class TagBuilder
     }
 
     /**
-     * Convenience method for triggering a raw line event 
-     * 
-     * @param string $line 
+     * Convenience method for triggering a raw line event
+     *
+     * @param string $line
      * @return TagBuilder
      */
     protected function rawLine($line)
@@ -117,8 +117,8 @@ class TagBuilder
     }
 
     /**
-     * getEvent 
-     * 
+     * getEvent
+     *
      * @return TagEvent
      */
     public function getEvent()
@@ -131,11 +131,11 @@ class TagBuilder
 
     /**
      * Set the event manager instance used by this context
-     * 
-     * @param  EventCollection $events 
+     *
+     * @param  EventManager $events
      * @return mixed
      */
-    public function setEventManager(EventCollection $events)
+    public function setEventManager(EventManager $events)
     {
         $this->events = $events;
         return $this;
@@ -145,12 +145,12 @@ class TagBuilder
      * Retrieve the event manager
      *
      * Lazy-loads an EventManager instance if none registered.
-     * 
-     * @return EventCollection
+     *
+     * @return EventManager
      */
     public function events()
     {
-        if (!$this->events instanceof EventCollection) {
+        if (!$this->events instanceof EventManager) {
             $identifiers = array(__CLASS__, get_class($this));
             if (isset($this->eventIdentifier)) {
                 if ((is_string($this->eventIdentifier))
@@ -169,11 +169,11 @@ class TagBuilder
     }
 
     /**
-     * Simple recursive glob(). Does not support GLOB_BRACE 
+     * Simple recursive glob(). Does not support GLOB_BRACE
      *
      * @see http://www.php.net/manual/en/function.glob.php#106595
-     * @param string $pattern 
-     * @param int $flags 
+     * @param string $pattern
+     * @param int $flags
      * @return array
      */
     protected function globRecursive($pattern, $flags = 0)
